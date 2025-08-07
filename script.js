@@ -1,60 +1,87 @@
-class CuentaBanacaria {
-    titular;
-    #saldoInicial;
+function CuentaBancaria(titular, saldoInicial) {
+    this.titular = titular;
+    this.saldo = saldoInicial;
+}
+
+CuentaBancaria.prototype.depositar = function(monto) {
+    this.saldo += monto;
+    console.log(`Depósito exitoso. Nuevo saldo: $${this.saldo}`);
+    return this;
+}
+
+CuentaBancaria.prototype.extraer = function(monto) {
+    if (monto > this.saldo) {
+        console.log("Fondos insuficientes");
+    } else {
+        this.saldo -= monto;
+        console.log(`Extracción exitosa. Nuevo saldo: $${this.saldo}`);
+    }
+    return this;
+}
+
+CuentaBancaria.prototype.consultarSaldo = function() {
+    console.log(`Saldo actual: $${this.saldo}`);
+    return this;
+}
+
+class CuentaBancariaClass {
+    #saldo; 
+    
     constructor(titular, saldoInicial) {
-        this.titular = titular
+        this.titular = titular;
         if (saldoInicial < 0) {
-            throw new Error("El saldo inicial no puede ser negativo")
+            throw new Error("El saldo inicial no puede ser negativo");
         }
-        this.#saldoInicial = saldoInicial
-        console.log(`Nombre de la cuenta ${this.titular}, saldo de la cuenta $${this.#saldoInicial}`);
+        this.#saldo = saldoInicial;
+        console.log(`Cuenta creada - Titular: ${this.titular}, Saldo inicial: $${this.#saldo}`);
     }
 
     getSaldo() {
-        return this.#saldoInicial
+        return this.#saldo;
     }
 
     setSaldo(nuevoSaldo) {
         if (nuevoSaldo < 0) {
-            console.log("el saldo no puede ser negativo");
+            console.log("Error: El saldo no puede ser negativo");
             return;
         }
-        this.#saldoInicial = nuevoSaldo;
+        this.#saldo = nuevoSaldo;
+        console.log(`Saldo actualizado a: $${this.#saldo}`);
     }
 
     depositar(monto) {
         if (monto <= 0) {
-            console.log("Error: El monto a depositar debe ser mayor a 0");
+            console.log("Error: El monto debe ser mayor a 0");
             return this;
         }
-        this.#saldoInicial += monto;
-        console.log(`Depositado: $${monto}`);
-        console.log(`Saldo total: $${this.#saldoInicial}`);
+        this.#saldo += monto;
+        console.log(`Depositado: $${monto}. Nuevo saldo: $${this.#saldo}`);
         return this;
     }
 
     extraer(monto) {
         if (monto <= 0) {
-            console.log("Error: El monto a extraer debe ser mayor a 0");
+            console.log("Error: El monto debe ser mayor a 0");
             return this;
         }
-        if (monto > this.#saldoInicial) {
+        if (monto > this.#saldo) {
             console.log("Fondos insuficientes");
             return this;
         }
-        this.#saldoInicial -= monto;
-        console.log(`Monto extraído: $${monto}`);
+        this.#saldo -= monto;
+        console.log(`Extraído: $${monto}. Nuevo saldo: $${this.#saldo}`);
         return this;
     }
 
     consultarSaldo() {
-        console.log(`Saldo actual: $${this.#saldoInicial}`)
-        return this
+        console.log(`Saldo actual: $${this.#saldo}`);
+        return this;
     }
 }
 
-const cuenta = new CuentaBanacaria("Juan", 100);
-cuenta.depositar(500)
-cuenta.extraer(700)
-cuenta.consultarSaldo()
+const cuentaClase = new CuentaBancariaClass("Juan", 100);
+cuentaClase.depositar(500);
+cuentaClase.extraer(200);
+cuentaClase.consultarSaldo();
+
 
